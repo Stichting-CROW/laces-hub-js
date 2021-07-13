@@ -1,0 +1,76 @@
+{
+  "name": "@stichting-crow/laces-hub-js",
+  "version": "0.2.0",
+  "description": "Connect with Laces Hub",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Stichting-CROW/laces-hub-js.git"
+  },
+  "homepage": "https://github.com/Stichting-CROW/laces-hub-js",
+  "bugs": {
+    "url": "https://github.com/Stichting-CROW/laces-hub-js/issues"
+  },
+  "types": "types",
+  "author": "Redmer Kronemeijer <redmer.kronemeijer@crow.nl>",
+  "license": "MPL-2.0",
+  "private": true,
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "devDependencies": {
+    "@types/node": "^16.3.1",
+    "@types/node-fetch": "^2.5.11",
+    "@typescript-eslint/eslint-plugin": "^4.28.3",
+    "@typescript-eslint/parser": "^4.28.3",
+    "cross-env": "^7.0.3",
+    "dotenv": "^10.0.0",
+    "eslint": "^7.30.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-jest": "^24.3.6",
+    "eslint-plugin-prettier": "^3.4.0",
+    "husky": "^7.0.1",
+    "jest": "^27.0.6",
+    "lint-staged": "^11.0.1",
+    "prettier": "^2.3.2",
+    "ts-jest": "^27.0.3",
+    "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.1"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "tsc",
+    "dev:prepare": "husky install",
+    "lint": "cross-env ESLINT_STRICT=true ESLINT_EXPENSIVE=true eslint --ext .tsx --ext .ts ./src",
+    "format": "yarn format:ts",
+    "format:ts": "prettier --parser typescript --write $(find ./src -name '*.ts')",
+    "format:json": "prettier --parser json --write $(find ./src -name '*.json')"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "prettier --parser typescript --write",
+      "yarn run lint",
+      "yarn test --findRelatedTests"
+    ],
+    "*.json": [
+      "prettier --write"
+    ],
+    "*.md": [
+      "prettier --write"
+    ]
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/__tests__/**/(*.)+test\\.ts"
+    ],
+    "transform": {
+      "\\.ts$": "ts-jest"
+    }
+  },
+  "prettier": {
+    "printWidth": 100
+  }
+}

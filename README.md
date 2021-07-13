@@ -1,2 +1,5 @@
 # laces-hub-js
-NPM package om programmatisch toegang te krijgen tot Laces Hub (http://hub.laces.tech)
+
+Package to connect programmatically with [Laces Hub][hub].
+
+hub: http://hub.laces.tech
