@@ -1,6 +1,6 @@
 {
   "name": "@stichting-crow/laces-hub-js",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Connect with Laces Hub",
   "main": "index.js",
   "repository": {
