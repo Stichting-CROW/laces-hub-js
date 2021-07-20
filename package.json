@@ -14,7 +14,7 @@
   "bugs": {
     "url": "https://github.com/Stichting-CROW/laces-hub-js/issues"
   },
-  "types": "lib/types",
+  "types": "lib",
   "author": "Redmer Kronemeijer <redmer.kronemeijer@crow.nl>",
   "license": "MPL-2.0",
   "private": false,

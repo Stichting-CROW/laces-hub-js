@@ -29,8 +29,8 @@
     "noPropertyAccessFromIndexSignature": true,
 
     // declarations
-    "declaration": true,
-    "declarationDir": "./lib/types"
+    "declaration": true
+    // "declarationDir": "./lib"
   },
   "compileOnSave": true,
   "include": ["src/**/*.ts"],
