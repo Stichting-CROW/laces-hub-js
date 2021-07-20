@@ -2,7 +2,10 @@
   "name": "@stichting-crow/laces-hub-js",
   "version": "0.2.2",
   "description": "Connect with Laces Hub",
-  "main": "index.js",
+  "main": "lib/laces/index.js",
+  "files": [
+    "lib/**/*"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Stichting-CROW/laces-hub-js.git"
@@ -11,7 +14,7 @@
   "bugs": {
     "url": "https://github.com/Stichting-CROW/laces-hub-js/issues"
   },
-  "types": "types",
+  "types": "lib/types",
   "author": "Redmer Kronemeijer <redmer.kronemeijer@crow.nl>",
   "license": "MPL-2.0",
   "private": false,
@@ -19,6 +22,7 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "devDependencies": {
+    "@types/jest": "^26.0.24",
     "@types/node": "^16.3.1",
     "@types/node-fetch": "^2.5.11",
     "@typescript-eslint/eslint-plugin": "^4.28.3",
@@ -36,6 +40,7 @@
     "prettier": "^2.3.2",
     "ts-essentials": "^7.0.2",
     "ts-jest": "^27.0.3",
+    "typedoc": "^0.21.4",
     "typescript": "^4.3.5"
   },
   "dependencies": {
@@ -44,7 +49,11 @@
   "scripts": {
     "test": "jest",
     "build": "tsc",
-    "start": "yarn build && node ./dist/index.js",
+    "start": "yarn build && node ./lib/index.js",
+    "prepare": "yarn build",
+    "prepublishOnly": "yarn test && yarn run lint",
+    "preversion": "yarn run lint",
+    "postversion": "git push && git push --tags",
     "dev:prepare": "husky install",
     "lint": "cross-env ESLINT_STRICT=true ESLINT_EXPENSIVE=true eslint --ext .tsx --ext .ts ./src",
     "format": "yarn format:ts",
