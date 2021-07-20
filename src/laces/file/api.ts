@@ -3,7 +3,7 @@ import { Dictionary } from "ts-essentials";
 import Laces from "..";
 import { FromAPI } from "../util/types";
 import { FileInfo, NewFileMetadata } from "./types";
-import { VersionedFile } from "./versioned";
+import { VersionedFileResource } from "./versioned";
 
 /** Files are assets like images or documents, either versioned or not. */
 export namespace Files {
@@ -16,7 +16,7 @@ export namespace Files {
    * @request GET:/api/v3/files/{id}
    */
   export async function GetFile(fileId: string) {
-    return await Laces.asJSON<FileInfo>(`/api/v3/files/${fileId}`);
+    return await Laces.API.asJSON<FileInfo>(`/api/v3/files/${fileId}`);
   }
 
   /**
@@ -31,7 +31,7 @@ export namespace Files {
     const body = new FormData();
     body.append("content", payload);
 
-    return await Laces.asJSON<FileInfo>(`/api/v3/files/${fileId}`, {
+    return await Laces.API.asJSON<FileInfo>(`/api/v3/files/${fileId}`, {
       method: "PUT",
       body: body,
       type: "multipart/form-data",
@@ -47,7 +47,7 @@ export namespace Files {
    * @request DELETE:/api/v3/files/{id}
    */
   export async function DeleteFile(fileId: string): Promise<FromAPI<FileInfo> | void> {
-    return await Laces.asJSON<FileInfo>(`/api/v3/files/${fileId}`, {
+    return await Laces.API.asJSON<FileInfo>(`/api/v3/files/${fileId}`, {
       method: "DELETE",
     });
   }
@@ -61,7 +61,7 @@ export namespace Files {
    * @request GET:/api/v3/files/{id}/content
    */
   export async function DownloadFile(fileId: string) {
-    return Laces.asStream(`/api/v3/files/${fileId}/content`);
+    return Laces.API.asStream(`/api/v3/files/${fileId}/content`);
   }
 
   /**
@@ -78,7 +78,9 @@ export namespace Files {
     fileName: string,
     versionId: string
   ) {
-    return Laces.asStream(`/api/v3/repositories/${repositoryId}/${fileName}/versions/${versionId}`);
+    return Laces.API.asStream(
+      `/api/v3/repositories/${repositoryId}/${fileName}/versions/${versionId}`
+    );
   }
 
   /**
@@ -89,16 +91,8 @@ export namespace Files {
    * @summary Return files within repository
    * @request GET:/api/v3/repositories/{repositoryId}/files
    */
-  export async function getRepositoryFiles(repositoryId: string): Promise<LacesFiles[]> {
-    const files = await Laces.asJSON<FileInfo[]>(`/api/v3/repositories/${repositoryId}/files`);
-
-    const allVersionedFiles: FileInfo[] = [];
-
-    for (const file of files) {
-      allVersionedFiles.push(file);
-    }
-
-    return allVersionedFiles;
+  export async function GetRepositoryFiles(repositoryId: string) {
+    return await Laces.API.asJSON<FileInfo[]>(`/api/v3/repositories/${repositoryId}/files`);
   }
 
   /**
@@ -109,16 +103,15 @@ export namespace Files {
    * @summary Create file
    * @request POST:/api/v3/repositories/{repositoryId}/files
    */
-  export async function uploadFile(
+  export async function AddFile(
     repositoryId: string,
-    metadata: NewFileMetadata,
-    payload: Buffer
+    data: { fileInfo: Partial<NewFileMetadata>; content: Buffer }
   ): Promise<FromAPI<FileInfo>> {
     const body = new FormData();
-    body.append("fileInfo", JSON.stringify(metadata));
-    body.append("content", payload);
+    body.append("fileInfo", JSON.stringify(data.fileInfo));
+    body.append("content", data.content);
 
-    return await Laces.asJSON<FileInfo>(`/api/v3/repositories/${repositoryId}/files`, {
+    return await Laces.API.asJSON<FileInfo>(`/api/v3/repositories/${repositoryId}/files`, {
       method: "POST",
       type: "multipart/form-data",
       body: body,
@@ -134,7 +127,7 @@ export namespace Files {
    * @request GET:/api/v3/repositories/{repositoryId}/{filename}
    */
   export async function getFileContent(repositoryId: string, filename: string) {
-    return await Laces.asJSON<FileInfo>(`/api/v3/repositories/${repositoryId}/${filename}`, {
+    return await Laces.API.asJSON<FileInfo>(`/api/v3/repositories/${repositoryId}/${filename}`, {
       method: "GET",
     });
   }
@@ -143,7 +136,7 @@ export namespace Files {
 /** @deprecated */
 export class LacesFiles {
   /** Gather file descriptions and collect them into {@link LacesFiles files} */
-  static asVersionedFiles(files: FileInfo[]): VersionedFile[] {
+  static asVersionedFiles(files: FileInfo[]): VersionedFileResource[] {
     const name2version: Dictionary<FileInfo[], Required<FileInfo>["name"]> = {};
     for (const file of files) {
       if (name2version[file.name!]) {
@@ -152,9 +145,9 @@ export class LacesFiles {
       name2version[file.name!] = [file];
     }
 
-    const result: VersionedFile[] = [];
+    const result: VersionedFileResource[] = [];
     for (const [filename, infos] of Object.entries(name2version)) {
-      result.push(new VersionedFile(filename, infos));
+      result.push(new VersionedFileResource(filename, infos));
     }
     return result;
   }

@@ -1,16 +1,18 @@
-import { Blob } from "buffer";
 import { assert } from "ts-essentials";
-import { Repository } from "../repository/repository";
-import { FromAPI } from "../util/types";
-import LacesFiles, { Files } from "./api";
+import Laces from "..";
+import { FromAPI, VersionedLacesResource } from "../util/types";
 import { FileResource } from "./resource";
 import { FileInfo, FileVersioningMode, NewFileMetadata } from "./types";
 
 /** Represents all versions of a file. */
-export class VersionedFile extends FileResource {
+export class VersionedFileResource
+  extends FileResource
+  implements VersionedLacesResource<FileResource>
+{
   readonly filename: string;
   readonly versions: FileResource[];
   readonly versioningMode: FileVersioningMode;
+  readonly isVersioned: boolean;
 
   /** Construct a versioned container of all {@link FileInfo file descriptors}. */
   public constructor(filename: string, versions: FileInfo[]) {
@@ -21,6 +23,7 @@ export class VersionedFile extends FileResource {
     this.filename = filename;
     this.versioningMode = orderedVersions[0].versioningMode!;
     this.versions = [];
+    this.isVersioned = true;
 
     for (const version of orderedVersions) {
       if (version.name! !== filename)
@@ -29,12 +32,28 @@ export class VersionedFile extends FileResource {
     }
   }
 
+  async lastVersion(): Promise<FileResource> {
+    return this.versions[0];
+  }
+
+  async firstVersion(): Promise<FileResource> {
+    return this.versions.slice(-1)[0];
+  }
+
+  async compareVersions(
+    _idA: FileResource,
+    _idB: FileResource,
+    _options?: { format: any }
+  ): Promise<NodeJS.ReadableStream> {
+    throw new Error("Method not implemented.");
+  }
+
   public static requiresLabelForVersioningMode(mode: FileVersioningMode) {
     return mode == "CUSTOM";
   }
 
   public versionRequiresLabel(): boolean {
-    return VersionedFile.requiresLabelForVersioningMode(this.versioningMode);
+    return VersionedFileResource.requiresLabelForVersioningMode(this.versioningMode);
   }
 
   /** Uploads a new version of this file. */
@@ -51,6 +70,6 @@ export class VersionedFile extends FileResource {
         `File "${info.name}" is versioned and a new version requires a version label`
       );
     }
-    return Files.uploadFile(info.repositoryId, metadata, payload);
+    return Laces.API.File.AddFile(info.repositoryId, { fileInfo: metadata, content: payload });
   }
 }
