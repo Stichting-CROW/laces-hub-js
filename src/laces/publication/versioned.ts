@@ -1,4 +1,3 @@
-import { MarkRequired } from "ts-essentials";
 import Laces from "..";
 import { VersionDeltaFormat } from "../repository/types";
 import { FromAPI, VersionedLacesResource } from "../util/types";
