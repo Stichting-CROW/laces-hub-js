@@ -67,10 +67,31 @@ export class Repository
   /** Returns publication within the repository. */
   async publications(): Promise<RdfPublication[]> {
     const data = await Laces.API.Publication.GetRepositoryPublications(this.id);
-    return data.map((info) => {
-      if (info.versioningMode === "NONE") return new RdfPublication(info.id, info);
-      else return new VersionedRdfPublication(info.id, info);
-    });
+
+    const unversioned: RdfPublication[] = [];
+    const name2version: Dictionary<PublicationView[], Required<PublicationView>["name"]> = {};
+
+    for (const info of data) {
+      if (info.versioningMode === "NONE") {
+        unversioned.push(new RdfPublication(info.id, info));
+        continue;
+      }
+
+      if (name2version[info.name]) {
+        name2version[info.name].push(info);
+        continue;
+      } else {
+        name2version[info.name] = [info];
+        continue;
+      }
+    }
+
+    const versioned: VersionedRdfPublication[] = [];
+    for (const [__, infos] of Object.entries(name2version)) {
+      const [basename, ...__] = infos[0].uri.split("/versions/");
+      versioned.push(new VersionedRdfPublication(basename, infos));
+    }
+    return [...unversioned, ...versioned];
   }
 
   /** Returns files within the repository. */

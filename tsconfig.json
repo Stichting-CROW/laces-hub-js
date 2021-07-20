@@ -5,7 +5,7 @@
     "module": "commonjs",
     "esModuleInterop": true,
 
-    "removeComments": true,
+    "removeComments": false,
     "outDir": "./lib",
     "rootDir": "./src",
     "sourceMap": true,

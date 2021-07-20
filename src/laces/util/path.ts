@@ -33,17 +33,17 @@ export async function publicationFromPath(path: string): Promise<RdfPublication 
 
   const repo = await repositoryFromPath(pathComponents.join("/"));
   if (!repo) return;
-  return (await repo.publications()).find((info) => info.cache.uri === path);
+  return (await repo.publications()).find((info) => info.cache.uri?.startsWith(path));
 }
 
 /** Get file at path. */
 export async function fileFromPath(path: string): Promise<FileResource | undefined> {
   const pathComponents = path.split("/");
-  pathComponents.pop();
+  const filename = pathComponents.pop();
 
   const repo = await repositoryFromPath(pathComponents.join("/"));
   if (!repo) return;
-  return (await repo.files()).find((info) => info.cache.name === path);
+  return (await repo.files()).find((info) => info.cache.name === filename);
 }
 
 /** Get repository at path. */

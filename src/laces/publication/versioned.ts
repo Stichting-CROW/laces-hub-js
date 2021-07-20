@@ -15,31 +15,31 @@ export class VersionedRdfPublication
   extends RdfPublication
   implements VersionedLacesResource<PublicationVersionView>
 {
-  override cache: MarkRequired<Partial<PublicationView>, "versions">;
-  readonly versions: PublicationVersionView[];
+  readonly versions: RdfPublication[];
   readonly versioningMode: PublicationVersioningMode;
   override readonly isVersioned: boolean;
+  readonly filename: string;
 
-  constructor(id: string, info?: Partial<PublicationView>) {
-    super(id, info);
-    this.cache = { ...info } as typeof VersionedRdfPublication.prototype.cache;
+  constructor(filename: string, versions: PublicationView[]) {
+    const orderedVersions = versions.sort((b, a) => a.publicationDate! - b.publicationDate!);
+    super(orderedVersions[0].id!, orderedVersions[0]);
+
+    this.filename = filename;
+    this.versioningMode = orderedVersions[0].versioningMode!;
+    this.versions = [];
     this.isVersioned = true;
-    this.versions = [...(info?.versions ?? [])];
-    this.versioningMode = info?.versioningMode ?? "UNDEFINED";
+
+    for (const version of orderedVersions) {
+      this.versions.push(new RdfPublication(version.id!, version));
+    }
   }
 
-  async lastVersion(): Promise<FromAPI<PublicationVersionView>> {
-    if (!this.cache) {
-      this.cache = await this.getInfo();
-    }
-    return this.cache.versions[0] as FromAPI<PublicationVersionView>;
+  async lastVersion(): Promise<RdfPublication> {
+    return this.versions[0];
   }
 
-  async firstVersion(): Promise<FromAPI<PublicationVersionView>> {
-    if (!this.cache) {
-      this.cache = await this.getInfo();
-    }
-    return this.cache.versions[this.cache.versions.length - 1] as FromAPI<PublicationVersionView>;
+  async firstVersion(): Promise<RdfPublication> {
+    return this.versions.slice(-1)[0];
   }
 
   /**

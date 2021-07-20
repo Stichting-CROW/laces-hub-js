@@ -40,6 +40,7 @@ export class VersionedFileResource
     return this.versions.slice(-1)[0];
   }
 
+  /** @throws Not implemented for arbitray files. */
   async compareVersions(
     _idA: FileResource,
     _idB: FileResource,

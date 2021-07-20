@@ -39,7 +39,9 @@ export class Endpoint {
   }
 
   private static authToken() {
-    Buffer.from(process.env.LACES_APP_ID + ":" + process.env.LACES_APP_PWD).toString("base64");
+    return Buffer.from(process.env.LACES_APP_ID + ":" + process.env.LACES_APP_PWD).toString(
+      "base64"
+    );
   }
 
   /** Fetch from server. */
