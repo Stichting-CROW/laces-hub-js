@@ -34,11 +34,13 @@ export class Endpoint {
     }
   }
 
-  private static endpoint = `${process.env.LACES_ENDPOINT_URI}`;
+  static endpoint() {
+    return `${process.env.LACES_ENDPOINT_URI}`;
+  }
 
-  private static authToken = Buffer.from(
-    process.env.LACES_APP_ID + ":" + process.env.LACES_APP_PWD
-  ).toString("base64");
+  private static authToken() {
+    Buffer.from(process.env.LACES_APP_ID + ":" + process.env.LACES_APP_PWD).toString("base64");
+  }
 
   /** Fetch from server. */
   static async fetch(path: string, params?: RequestParams): Promise<Response> {
@@ -46,12 +48,12 @@ export class Endpoint {
     const queryString = param.query && QueryParams.toQueryString(param.query);
 
     const headers: Headers = new Headers(param.rawHeaders);
-    headers.append("Authorization", `Basic ${Endpoint.authToken}`);
+    headers.append("Authorization", `Basic ${Endpoint.authToken()}`);
     headers.append("User-Agent", `@stichting-crow/laces-hub-js`);
     headers.append("Accept", param.accept ?? "application/json");
     param.type && headers.append("Content-Type", param.type);
 
-    const base = param.baseUrl ?? Endpoint.endpoint;
+    const base = param.baseUrl ?? Endpoint.endpoint();
     const url = `${base}${path}${queryString ? `?${queryString}` : ""}`;
     const response = await fetch(url, { headers: headers, body: param.body });
     if (!response.ok) throw new EndpointError(response);
