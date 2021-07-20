@@ -1,0 +1,1772 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "v3",
+    "title": "Laces Hub - REST API"
+  },
+  "host": "hub.laces.tech",
+  "schemes": ["https"],
+  "paths": {
+    "/api/v3/groups": {
+      "get": {
+        "tags": ["Groups"],
+        "summary": "Return top-level groups",
+        "description": "Returns a collection with all top-level groups.",
+        "operationId": "getTopGroups",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "searchText",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": ["name", "description", "createdOn", "modifiedOn"]
+          },
+          {
+            "name": "sortDirection",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": ["ASC", "DESC"]
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "minimum": 0,
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "maximum": 100,
+            "minimum": 1,
+            "format": "int32"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/GroupViewPage"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Groups"],
+        "summary": "Create top-level group",
+        "description": "Creates a new top-level group.",
+        "operationId": "createTopGroup",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Group"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Group"
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/groups/{id}": {
+      "get": {
+        "tags": ["Groups"],
+        "summary": "Return group",
+        "description": "Returns the group specified by the specfied id.",
+        "operationId": "getGroupDetails",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/GroupView"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Groups"],
+        "summary": "Delete group",
+        "description": "Deletes the group specified by the specfied id.",
+        "operationId": "deleteGroup",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Group"
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Groups"],
+        "summary": "Update group partially",
+        "description": "Updates the groups only with the provided info, omits the rest.",
+        "operationId": "updatePartialGroup",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GroupPartial"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Group"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Groups"],
+        "summary": "Create subgroup",
+        "description": "Cretes a group within - or subgroup of - the group specified by the given id.",
+        "operationId": "createSubGroup",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Group"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Group"
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/groups/{id}/subgroups": {
+      "get": {
+        "tags": ["Groups"],
+        "summary": "Return subgroups",
+        "description": "Returns all (direct) subgroups of the group specified by the given id.",
+        "operationId": "getSubGroups",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "searchText",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": ["name", "description", "createdOn", "modifiedOn"]
+          },
+          {
+            "name": "sortDirection",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": ["ASC", "DESC"]
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "minimum": 0,
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "maximum": 100,
+            "minimum": 1,
+            "format": "int32"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/GroupViewPage"
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/repositories": {
+      "get": {
+        "tags": ["Repositories"],
+        "summary": "Return repositories",
+        "description": "Returns a collection of all repositories for which authenticated user has acces.",
+        "operationId": "getRepositoriesWithAccessStatus",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RepositoryView"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Repositories"],
+        "summary": "Create repository",
+        "description": "Creates a new repository.",
+        "operationId": "createRepositoryInGroup",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Repository to be created",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RepositoryData"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Repository"
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/repositories/{id}": {
+      "patch": {
+        "tags": ["Repositories"],
+        "summary": "Update repository partially",
+        "description": "Updates the repository only with the provided info, omits the rest.",
+        "operationId": "updateRepository",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RepositoryPartial"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/RepositoryData"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Repositories"],
+        "summary": "Return repository",
+        "description": "Returns the repository details specified by the given id.",
+        "operationId": "getRepositoryMetadata",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the repository",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/RepositoryData"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Repositories"],
+        "summary": "Delete repository",
+        "description": "Deletes the repository specified by the given id.",
+        "operationId": "deleteRepository",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Repository"
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/groups/{groupId}/repositories": {
+      "get": {
+        "tags": ["Repositories"],
+        "summary": "Return repositories within group",
+        "description": "Returns a collection of all repositories within the group identified by the given id.",
+        "operationId": "getRepositories",
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "searchText",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sortDirection",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": ["ASC", "DESC"]
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "maximum": 100,
+            "minimum": 1,
+            "format": "int32"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/RepositoryPage"
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/repositories/{repositoryId}/publications": {
+      "get": {
+        "tags": ["Publications"],
+        "summary": "Return publications within repository",
+        "description": "Returns the publications within the repository with the specified id",
+        "operationId": "getRepositoryPublications",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "repositoryId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PublicationView"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Publications"],
+        "summary": "Create publication",
+        "description": "Creates a new publication within repository specified by id, using the provided payload.",
+        "operationId": "createPublication",
+        "consumes": ["multipart/form-data"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "repositoryId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "metadata",
+            "in": "formData",
+            "required": true,
+            "type": "file",
+            "format": "{\"type\":\"object\",\"properties\":{\"publicationUri\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"versioningMode\":{\"type\":\"string\"},\"versionLabel\":{\"type\":\"string\"},\"useVersionedBaseUri\":{\"type\":\"boolean\"},\"description\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"},\"publisher\":{\"type\":\"string\"},\"schemaURIs\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}}}}",
+            "x-example": "{\"publicationUri\":\"private\\/test\\/semmtech\\/library\\/cabins-in-the-woods\",\"name\":\"cabins-in-the-woods\",\"owner\":\"Jill\",\"publisher\":\"Ellen\",\"versioningMode\":\"INCREMENTAL\",\"versionLabel\":\"ver1\",\"useVersionedBaseUri\":true,\"description\":\"Demo OTL\",\"schemaURIs\":[\"http:\\/\\/www.laces.tech\\/publication\\/ns\\/semmtech\\/live\\/laces\\/schema\\/shapes\\/\",\"http:\\/\\/www.laces.tech\\/publication\\/ns\\/semmtech\\/live\\/laces\\/schema\\/otl-manager\\/\"]}"
+          },
+          {
+            "name": "content",
+            "in": "formData",
+            "required": true,
+            "type": "file",
+            "format": "\"Turtle (.ttl), N-Triples (.nt), N3 (.n3), RDF/XML (.rdf, .owl, .xml), JSON-LD (.jsonld), RDF/JSON (.rj)\";"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/PublicationView"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Publications"],
+        "summary": "Update publication",
+        "description": "Updates the publication using the given payload.",
+        "operationId": "updatePublication",
+        "consumes": ["multipart/form-data"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "repositoryId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "meta-data",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "format": "{\"type\":\"object\",\"properties\":{\"publicationUri\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"versioningMode\":{\"type\":\"string\"},\"versionLabel\":{\"type\":\"string\"},\"useVersionedBaseUri\":{\"type\":\"boolean\"},\"description\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"},\"publisher\":{\"type\":\"string\"},\"schemaURIs\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}}}}",
+            "x-example": "{\"publicationUri\":\"private\\/test\\/semmtech\\/library\\/cabins-in-the-woods\",\"name\":\"cabins-in-the-woods\",\"owner\":\"Jill\",\"publisher\":\"Ellen\",\"versioningMode\":\"INCREMENTAL\",\"versionLabel\":\"ver1\",\"useVersionedBaseUri\":true,\"description\":\"Demo OTL\",\"schemaURIs\":[\"http:\\/\\/www.laces.tech\\/publication\\/ns\\/semmtech\\/live\\/laces\\/schema\\/shapes\\/\",\"http:\\/\\/www.laces.tech\\/publication\\/ns\\/semmtech\\/live\\/laces\\/schema\\/otl-manager\\/\"]}"
+          },
+          {
+            "name": "Content",
+            "in": "formData",
+            "required": true,
+            "type": "file",
+            "format": "\"Turtle (.ttl), N-Triples (.nt), N3 (.n3), RDF/XML (.rdf, .owl, .xml), JSON-LD (.jsonld), RDF/JSON (.rj)\";"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/PublicationView"
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/publications/{id}": {
+      "get": {
+        "tags": ["Publications"],
+        "summary": "Return publication's meta-data",
+        "description": "Returns the meta-data of the publication specified by the given id.",
+        "operationId": "getPublicationMetaData",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Publications"],
+        "summary": "Update publication's meta-data",
+        "description": "Updates the publication only with the provided info.",
+        "operationId": "updatePublicationMetadata",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the publication",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "publisher",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "owner",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Publication"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Publications"],
+        "summary": "Delete publication",
+        "description": "Deletes the publication specified by the given id.",
+        "operationId": "deletePublication",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Publication"
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/publications.delta": {
+      "get": {
+        "tags": ["Publications"],
+        "summary": "Return delta between publications",
+        "description": "Returns the delta between two publications as either TriG or N-Quads format. Using the publications A and B, the delta is calculated using B - A.",
+        "operationId": "findDeltaForPublicationVersions",
+        "produces": ["application/n-quads", "application/trig"],
+        "parameters": [
+          {
+            "name": "version1",
+            "in": "query",
+            "description": "First (A) publication id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "version2",
+            "in": "query",
+            "description": "Second (B) publication id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "enum": ["application/n-quads", "application/trig"]
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/publications/{id}/statements": {
+      "get": {
+        "tags": ["Publications"],
+        "summary": "Get publication content",
+        "description": "Returns the RDF content of the publication specified by the given id.",
+        "operationId": "getPublicationContent",
+        "produces": [
+          "text/turtle",
+          "application/x-turtle",
+          "application/rdf+xml",
+          "application/n-triples",
+          "application/ld+json"
+        ],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/publications/{id}/sparql": {
+      "get": {
+        "tags": ["Publications"],
+        "summary": "Execute SPARQL query using GET",
+        "description": "Performs a SPARQL query using the query specified in the query parameter.",
+        "operationId": "executeSparqlQueryGet",
+        "produces": [
+          "application/json",
+          "text/csv",
+          "application/sparql-results+json",
+          "application/sparql-results+xml",
+          "text/tab-separated-values"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "description": "Query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "default-graph-uri",
+            "in": "query",
+            "description": "Any (additional) publications that should be added as default graph",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Publications"],
+        "summary": "Execute SPARQL query using POST",
+        "description": "Performs a SPARQL query using the query specified in the body payload.",
+        "operationId": "executeSparqlQueryPost",
+        "consumes": ["application/sparql-query"],
+        "produces": [
+          "application/json",
+          "text/csv",
+          "application/sparql-results+json",
+          "application/sparql-results+xml",
+          "text/tab-separated-values"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "default-graph-uri",
+            "in": "query",
+            "description": "Any (additional) publications/datasets that should be added as default graph",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/files/{id}": {
+      "get": {
+        "tags": ["Files"],
+        "summary": "Return file's meta-data",
+        "description": "Returns the meta-data of file specified by the given id.",
+        "operationId": "getFile",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/FileInfo"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Files"],
+        "summary": "Update file content",
+        "description": "Updates the content of the file specified by the given id.",
+        "operationId": "updateNonVersionFile",
+        "consumes": ["multipart/form-data"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "content",
+            "in": "formData",
+            "required": true,
+            "type": "file"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/FileInfo"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Files"],
+        "summary": "Delete file",
+        "description": "Delets the file specified by the given id.",
+        "operationId": "deleteFile",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/FileInfo"
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/files/{id}/content": {
+      "get": {
+        "tags": ["Files"],
+        "summary": "Download file",
+        "description": "Returns the content of the file specified by the given id.",
+        "operationId": "downloadFile",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string",
+              "format": "byte"
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/repositories/{repositoryId}/files": {
+      "get": {
+        "tags": ["Files"],
+        "summary": "Return files within repository",
+        "description": "Returns a collection of the files from the repository with the specified repository id.",
+        "operationId": "getRepositoryFiles",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "repositoryId",
+            "in": "path",
+            "description": "The repositoryId of the repository",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/FileInfo"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Files"],
+        "summary": "Create file",
+        "description": "Creates a file within the given repository using the specified id.",
+        "operationId": "addFile",
+        "consumes": ["multipart/form-data"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "repositoryId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "fileInfo",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "format": "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"},\"versioningMode\":{\"type\":\"string\"},\"versionLabel\":{\"type\":\"string\"}}}",
+            "x-example": "{\"name\":\"screenshot.jpeg\",\"versioningMode\":\"CUSTOM\",\"versionLabel\":\"ver1\"}"
+          },
+          {
+            "name": "content",
+            "in": "formData",
+            "required": true,
+            "type": "file"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/FileInfo"
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/repositories/{repositoryId}/{filename}": {
+      "get": {
+        "tags": ["Files"],
+        "summary": "Return file",
+        "description": "Returns the file specified by the given filename.",
+        "operationId": "getFileContent",
+        "parameters": [
+          {
+            "name": "repositoryId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "filename",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/File"
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/repositories/{repositoryId}/{filename}/versions/{version}": {
+      "get": {
+        "tags": ["Files"],
+        "summary": "Return versioned file",
+        "description": "Returns the specific version of the file based on filename and version given.",
+        "operationId": "getVersionOfFileContent",
+        "parameters": [
+          {
+            "name": "repositoryId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "filename",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/File"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Group": {
+      "type": "object",
+      "required": ["name", "type"],
+      "properties": {
+        "createdBy": {
+          "type": "string"
+        },
+        "createdOn": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "description": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "modifiedBy": {
+          "type": "string"
+        },
+        "modifiedOn": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "parentId": {
+          "type": "string"
+        },
+        "pathSegment": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["PRIVATE", "PUBLIC", "USER"]
+        }
+      }
+    },
+    "GroupView": {
+      "type": "object",
+      "required": ["name", "type"],
+      "properties": {
+        "createdBy": {
+          "type": "string"
+        },
+        "createdOn": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "description": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "modifiedBy": {
+          "type": "string"
+        },
+        "modifiedOn": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "parentId": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "repositoryCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["VIEWER", "PUBLISHER", "MANAGER", "OWNER"]
+        },
+        "subgroupCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["PRIVATE", "PUBLIC", "USER"]
+        }
+      }
+    },
+    "GroupViewPage": {
+      "type": "object",
+      "required": ["contents", "total"],
+      "properties": {
+        "contents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GroupView"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "GroupPartial": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "parentId": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["PRIVATE", "PUBLIC", "USER"]
+        }
+      }
+    },
+    "RepositoryPartial": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "visible": {
+          "type": "boolean"
+        }
+      }
+    },
+    "RepositoryData": {
+      "type": "object",
+      "required": ["name", "parentId", "pathSegment", "visible"],
+      "properties": {
+        "createdBy": {
+          "type": "string"
+        },
+        "createdOn": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "description": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "modifiedBy": {
+          "type": "string"
+        },
+        "modifiedOn": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "parentId": {
+          "type": "string"
+        },
+        "pathSegment": {
+          "type": "string"
+        },
+        "publicationCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "visible": {
+          "type": "boolean"
+        }
+      }
+    },
+    "RepositoryPage": {
+      "type": "object",
+      "required": ["contents", "total"],
+      "properties": {
+        "contents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RepositoryData"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "Publication": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "publicationDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "publisher": {
+          "type": "string"
+        },
+        "repository": {
+          "type": "string"
+        },
+        "schemaURIs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "useVersionedBaseUri": {
+          "type": "boolean"
+        },
+        "versioningMode": {
+          "type": "string",
+          "enum": ["UNDEFINED", "NONE", "TIMESTAMP", "INCREMENTAL", "DATE_TIME", "CUSTOM"]
+        },
+        "versions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PublicationVersion"
+          }
+        }
+      }
+    },
+    "PublicationVersion": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "publicationDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "publisher": {
+          "type": "string"
+        },
+        "schemaURIs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "PublicationView": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "publicationDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "publisher": {
+          "type": "string"
+        },
+        "repository": {
+          "type": "string"
+        },
+        "schemaURIs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "useVersionedBaseUri": {
+          "type": "boolean"
+        },
+        "versioningMode": {
+          "type": "string",
+          "enum": ["UNDEFINED", "NONE", "TIMESTAMP", "INCREMENTAL", "DATE_TIME", "CUSTOM"]
+        },
+        "versions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PublicationVersionView"
+          }
+        }
+      }
+    },
+    "PublicationVersionView": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "publicationDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "publisher": {
+          "type": "string"
+        },
+        "schemaURIs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "Repository": {
+      "type": "object",
+      "required": ["name", "parentId", "pathSegment"],
+      "properties": {
+        "createdBy": {
+          "type": "string"
+        },
+        "createdOn": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "description": {
+          "type": "string",
+          "description": "description"
+        },
+        "id": {
+          "type": "string"
+        },
+        "modifiedBy": {
+          "type": "string"
+        },
+        "modifiedOn": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string",
+          "description": "name"
+        },
+        "parentId": {
+          "type": "string"
+        },
+        "pathSegment": {
+          "type": "string"
+        },
+        "publiclyVisible": {
+          "type": "boolean"
+        }
+      }
+    },
+    "RepositoryView": {
+      "type": "object",
+      "required": ["id", "name", "owner", "status"],
+      "properties": {
+        "accessRequestId": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description"
+        },
+        "fullPath": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "description": "ID"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name"
+        },
+        "owner": {
+          "type": "string",
+          "description": "Owner"
+        },
+        "publicVisibility": {
+          "type": "boolean"
+        },
+        "status": {
+          "type": "string",
+          "description": "Status",
+          "enum": [
+            "PENDING_PUBLISHER",
+            "PENDING_MANAGER",
+            "DENIED",
+            "VIEWER",
+            "PUBLISHER",
+            "MANAGER",
+            "OWNER"
+          ]
+        }
+      }
+    },
+    "FileInfo": {
+      "type": "object",
+      "properties": {
+        "createdBy": {
+          "type": "string"
+        },
+        "createdOn": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "id": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "mimeType": {
+          "type": "string"
+        },
+        "modifiedBy": {
+          "type": "string"
+        },
+        "modifiedOn": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "repositoryId": {
+          "type": "string"
+        },
+        "versioningMode": {
+          "type": "string",
+          "enum": ["UNDEFINED", "NONE", "TIMESTAMP", "INCREMENTAL", "DATE_TIME", "CUSTOM"]
+        }
+      }
+    },
+    "FileContent": {
+      "type": "object"
+    },
+    "File": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "file": {
+          "type": "string"
+        },
+        "filename": {
+          "type": "string"
+        },
+        "inputStream": {
+          "$ref": "#/definitions/FileContent"
+        },
+        "open": {
+          "type": "boolean"
+        },
+        "readable": {
+          "type": "boolean"
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "url": {
+          "type": "string",
+          "format": "url"
+        }
+      }
+    }
+  }
+}
