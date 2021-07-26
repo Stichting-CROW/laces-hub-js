@@ -1,5 +1,5 @@
-import Laces from "..";
-import { FromAPI, ReadOnlyLacesResource } from "../util/types";
+import Laces from "../../laces";
+import { FromAPI, ReadOnlyLacesResource } from "../../laces/util/types";
 import { UserView } from "./types";
 
 /** A user account, acting directly or through an tokened application. */

@@ -1,7 +1,7 @@
-import Laces from "..";
+import Laces from "../../laces";
 import { VersionDeltaFormat } from "../repository/types";
-import { FromAPI, VersionedLacesResource } from "../util/types";
-import { RdfPublication } from "./resource";
+import { FromAPI, VersionedLacesResource } from "../../laces/util/types";
+import { RdfPublication } from ".";
 import {
   NewPublicationMetadata,
   PublicationUpdateable,

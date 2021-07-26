@@ -1,16 +1,16 @@
 import { config } from "dotenv";
 import { default as Endpoint } from "./endpoint/fetch";
-import { Files } from "./file/api";
-import { FileResource } from "./file/resource";
-import { Groups } from "./group/api";
-import { getTopGroups, Group } from "./group/resource";
-import { Publications } from "./publication/api";
-import { RdfPublication } from "./publication/resource";
-import { Repositories } from "./repository/api";
-import { getRepositoriesWithAccessStatus, Repository } from "./repository/resource";
-import { Users } from "./user/api";
-import { User } from "./user/resource";
-import { fileFromPath, groupFromPath, publicationFromPath, repositoryFromPath } from "./util/path";
+import { Files } from "../resource/file/api";
+import { FileResource } from "../resource/file";
+import { Groups } from "../resource/group/api";
+import { getTopGroups, Group } from "../resource/group";
+import { Publications } from "../resource/publication/api";
+import { RdfPublication } from "../resource/publication";
+import { Repositories } from "../resource/repository/api";
+import { getRepositoriesWithAccessStatus, Repository } from "../resource/repository";
+import { Users } from "../resource/user/api";
+import { User } from "../resource/user";
+import { fileFromPath, groupFromPath, publicationFromPath, repositoryFromPath } from "../util/path";
 config();
 
 Endpoint.envCheck();

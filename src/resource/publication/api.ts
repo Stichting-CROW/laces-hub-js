@@ -1,5 +1,5 @@
 import FormData from "form-data";
-import Laces from "..";
+import Laces from "../../laces";
 import { VersionDeltaFormat } from "../repository/types";
 import { FileFormat, NewPublicationMetadata, PublicationView, SelectQueryFormat } from "./types";
 
@@ -38,7 +38,7 @@ export namespace Publications {
     return await Laces.API.asJSON<PublicationView>(
       `/api/v3/repositories/${repositoryId}/publications`,
       {
-        method: "post",
+        method: "POST",
         type: "multipart/form-data",
         body: body,
       }
@@ -57,7 +57,7 @@ export namespace Publications {
     return await Laces.API.asJSON<PublicationView>(
       `/api/v3/repositories/${repositoryId}/publications`,
       {
-        method: "put",
+        method: "PUT",
         type: "multipart/form-data",
         body: data,
       }
@@ -89,7 +89,7 @@ export namespace Publications {
     query?: { publisher?: string; owner?: string; description?: string }
   ) {
     return await Laces.API.asJSON<PublicationView>(`/api/v3/publications/${publicationId}`, {
-      method: "patch",
+      method: "PATCH",
       query: query,
     });
   }
@@ -104,7 +104,7 @@ export namespace Publications {
    */
   export async function DeletePublication(publicationId: string) {
     return await Laces.API.asJSON<PublicationView>(`/api/v3/publications/${publicationId}`, {
-      method: "delete",
+      method: "DELETE",
     });
   }
 

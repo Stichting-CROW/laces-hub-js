@@ -1,4 +1,4 @@
-import { QueryParamsType } from "./fetch";
+export type QueryParamsType = Record<string | number, any>;
 
 export namespace QueryParams {
   function encodeQueryParam(key: string, value: any) {
@@ -15,6 +15,7 @@ export namespace QueryParams {
     return value.map((v: any) => encodeQueryParam(key, v)).join("&");
   }
 
+  /** Convert query paramaters to a query parameter string. */
   export function toQueryString(query: QueryParamsType) {
     const keys = Object.keys(query).filter((key) => "undefined" !== typeof query[key]);
     return keys

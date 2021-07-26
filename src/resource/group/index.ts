@@ -1,8 +1,9 @@
-import Laces from "..";
-import { Repository } from "../repository/resource";
+import Laces from "../../laces";
+import { Repository } from "../repository";
 import { RepositoryData } from "../repository/types";
-import { allPages, allPagesId } from "../util/paginated";
-import { ConfirmDeletion, FromAPI, LacesResource } from "../util/types";
+import { allPages, allPagesId } from "../../laces/util/paginated";
+import { FromAPI, LacesResource } from "../../laces/util/types";
+import { ConfirmDeletion } from "../types";
 import {
   GroupMutationView as GroupMutationView,
   GroupView,

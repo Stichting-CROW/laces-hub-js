@@ -26,6 +26,7 @@ export interface LacesResource<T, U> extends ReadOnlyLacesResource<T> {
   contents(): Promise<any>;
 }
 
+/** A versioned resource is in-place updateable. */
 export interface VersionedLacesResource<V> extends LacesResource<T, U> {
   versions: V[];
   versioningMode: PublicationVersioningMode;
@@ -43,37 +44,16 @@ export interface VersionedLacesResource<V> extends LacesResource<T, U> {
 /** API responses have their ID filled out. */
 export declare type FromAPI<T> = DeepRequired<Readonly<T>>;
 
-/** Paginated API responses */
-export interface Paginated<T> {
-  contents: Readonly<T>[];
-  total: number;
-}
-
-/** Explicitely confirm deletion. */
-export interface ConfirmDeletion {
-  /** Function returns void if false */
-  confirm: boolean;
-}
-
-/** Optionally indicate which page of the paginated resources should be requested. */
-export interface WhichPage {
-  page: number;
-}
-
-/** Common interface for created/modified properties */
-export interface CreatedModifiedResource {
-  createdBy?: UserView["id"];
-  createdOn?: number;
-  modifiedBy?: UserView["id"];
-  modifiedOn?: number;
-}
-
+/** @deprecated */
 export type CommonProperties<T, U, V> = Exclude<T | U | V, keyof T | keyof U | keyof V>;
 
+/** @deprecated */
 export type Spread2<T, U> = Required<CommonProperties<T, U, null>> & Partial<T> & Partial<U>;
+/** @deprecated */
 export type Spread3<T, U, V> = Required<CommonProperties<T, U, V>> &
   Partial<T> &
   Partial<U> &
   Partial<V>;
 
+/** @deprecated */
 export type AsyncFn<T> = () => Promise<T>;

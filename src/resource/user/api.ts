@@ -1,4 +1,4 @@
-import Laces from "..";
+import Laces from "../../laces";
 import { UserView } from "./types";
 
 /** People (via their access tokens) that modify the files and publication on Laces. */

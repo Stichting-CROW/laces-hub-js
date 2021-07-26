@@ -1,5 +1,6 @@
-import Laces from "..";
-import { ConfirmDeletion, FromAPI, LacesResource } from "../util/types";
+import Laces from "../../laces";
+import { FromAPI, LacesResource } from "../../laces/util/types";
+import { ConfirmDeletion } from "../types";
 import { FileInfo } from "./types";
 
 /** Represents all versions of a file. */

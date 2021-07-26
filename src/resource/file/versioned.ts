@@ -1,7 +1,7 @@
 import { assert } from "ts-essentials";
-import Laces from "..";
-import { FromAPI, VersionedLacesResource } from "../util/types";
-import { FileResource } from "./resource";
+import Laces from "../../laces";
+import { FromAPI, VersionedLacesResource } from "../../laces/util/types";
+import { FileResource } from ".";
 import { FileInfo, FileVersioningMode, NewFileMetadata } from "./types";
 
 /** Represents all versions of a file. */

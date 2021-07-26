@@ -1,4 +1,5 @@
-import { CreatedModifiedResource, LacesResponse } from "../util/types";
+import { LacesResponse } from "../../laces/util/types";
+import { CreatedModifiedResource } from "../types";
 
 export type FileVersioningMode = "UNDEFINED" | "NONE" | "INCREMENTAL" | "DATE_TIME" | "CUSTOM";
 

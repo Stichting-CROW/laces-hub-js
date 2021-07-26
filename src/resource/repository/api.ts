@@ -1,5 +1,5 @@
-import Laces from "..";
-import { Paginated } from "../util/types";
+import Laces from "../../laces/";
+import { Paginated } from "../../laces/util/paginated";
 import { Repository, RepositoryData, RepositoryPartial, RepositoryView } from "./types";
 
 /** A repository contains publications and files. */

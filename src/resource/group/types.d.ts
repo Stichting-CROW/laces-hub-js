@@ -1,5 +1,6 @@
 import { MarkRequired } from "ts-essentials";
-import { CreatedModifiedResource, Paginated } from "../util/types";
+import { Paginated } from "../util/types";
+import { CreatedModifiedResource } from "../types";
 
 export type Visibility = "PRIVATE" | "PUBLIC" | "USER";
 export type AccessRole = "VIEWER" | "PUBLISHER" | "MANAGER" | "OWNER";

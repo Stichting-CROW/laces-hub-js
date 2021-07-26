@@ -1,5 +1,5 @@
-import Laces from "..";
-import { Paginated } from "../util/types";
+import Laces from "../../laces";
+import { Paginated } from "../../laces/util/paginated";
 import { GroupMutationView as Group, GroupMutationView, GroupView, Updateable } from "./types";
 
 /** Groups organize publications and can contain subgroups. */

@@ -1,7 +1,7 @@
 import FormData from "form-data";
 import { Dictionary } from "ts-essentials";
-import Laces from "..";
-import { FromAPI } from "../util/types";
+import Laces from "../../laces";
+import { FromAPI } from "../../laces/util/types";
 import { FileInfo, NewFileMetadata } from "./types";
 import { VersionedFileResource } from "./versioned";
 

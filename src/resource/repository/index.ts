@@ -1,19 +1,20 @@
 import { Dictionary } from "ts-essentials";
-import Laces from "..";
-import { FileResource } from "../file/resource";
+import Laces from "../../laces";
+import { FileResource } from "../file";
 import { FileInfo, NewFileMetadata } from "../file/types";
 import { VersionedFileResource } from "../file/versioned";
-import { RdfPublication } from "../publication/resource";
+import { RdfPublication } from "../publication";
 import { NewPublicationMetadata, PublicationView } from "../publication/types";
 import { VersionedRdfPublication } from "../publication/versioned";
-import { ConfirmDeletion, FromAPI, LacesResource } from "../util/types";
-import { likeUUID } from "../util/uuid";
+import { FromAPI, LacesResource } from "../../laces/util/types";
+import { likeUUID } from "../../laces/util/uuid";
 import {
   Repository as RepositoryT,
   RepositoryData,
   RepositoryPartial,
   RepositoryView,
 } from "./types";
+import { ConfirmDeletion } from "../types";
 
 /** Contains {@link RdfPublication RDF Publications} or {@link LacesFiles other files}. */
 export class Repository

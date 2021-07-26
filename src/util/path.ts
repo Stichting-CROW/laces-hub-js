@@ -1,9 +1,9 @@
-import Laces from "..";
-import { EndpointError } from "../endpoint/errors";
-import { FileResource } from "../file/resource";
-import { Group } from "../group/resource";
-import { RdfPublication } from "../publication/resource";
-import { Repository } from "../repository/resource";
+import Laces from "../laces";
+import { EndpointError } from "../laces/endpoint/errors";
+import { FileResource } from "../resource/file";
+import { Group } from "../resource/group";
+import { RdfPublication } from "../resource/publication";
+import { Repository } from "../resource/repository";
 
 export class PathError extends EndpointError {}
 

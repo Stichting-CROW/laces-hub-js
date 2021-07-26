@@ -1,4 +1,12 @@
-import { FromAPI, Paginated } from "./types";
+import { FromAPI } from "./types";
+
+/** Paginated API responses */
+export interface Paginated<T> {
+  /** Items on this page */
+  contents: Readonly<T>[];
+  /** Total number of items */
+  total: number;
+}
 
 declare type PaginatedArg0<T> = {
   ({ page }: { page: number }): Promise<Paginated<T>>;
@@ -19,7 +27,7 @@ export async function allPages<T>(fn: PaginatedArg0<T>): Promise<FromAPI<T>[]> {
     page = page + 1;
     const dataN = await fn({ page: page });
     result.push(...dataN.contents);
-  } while (data1.total >= result.length);
+  } while (result.length < data1.total);
 
   return result as FromAPI<T>[];
 }
