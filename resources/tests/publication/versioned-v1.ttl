@@ -1,0 +1,4 @@
+@base <http://example.org/> .
+
+<v1> a ex:Version ; 
+    ex:versionLabel "v1" .
