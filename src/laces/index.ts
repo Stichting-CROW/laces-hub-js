@@ -1,21 +1,29 @@
 import { config } from "dotenv";
-import { default as Endpoint } from "./endpoint/fetch";
 import { Files } from "../resource/file/api";
-import { FileResource } from "../resource/file";
+import { getTopGroups } from "../resource/group";
 import { Groups } from "../resource/group/api";
-import { getTopGroups, Group } from "../resource/group";
 import { Publications } from "../resource/publication/api";
-import { RdfPublication } from "../resource/publication";
+import { getRepositoriesWithAccessStatus } from "../resource/repository";
 import { Repositories } from "../resource/repository/api";
-import { getRepositoriesWithAccessStatus, Repository } from "../resource/repository";
-import { Users } from "../resource/user/api";
 import { User } from "../resource/user";
+import { Users } from "../resource/user/api";
+import { fileFromPath, groupFromPath, publicationFromPath, repositoryFromPath } from "../util/path";
+import { default as Endpoint } from "./endpoint/fetch";
 config();
 
 Endpoint.envCheck();
 
 /** The Laces Hub */
 const Laces = {
+  User: User,
+  Group: groupFromPath,
+  Repository: repositoryFromPath,
+  File: fileFromPath,
+  Publication: publicationFromPath,
+
+  groups: getTopGroups,
+  repositories: getRepositoriesWithAccessStatus,
+
   /** A collection of API calls to the platform. */
   API: {
     asJSON: Endpoint.asJson,
@@ -28,15 +36,6 @@ const Laces = {
     File: Files,
     Publication: Publications,
   },
-
-  User: User,
-  Group: Group,
-  Repository: Repository,
-  File: FileResource,
-  Publication: RdfPublication,
-
-  groups: getTopGroups,
-  repositories: getRepositoriesWithAccessStatus,
 };
 
 export default Laces;

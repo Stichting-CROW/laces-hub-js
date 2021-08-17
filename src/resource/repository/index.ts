@@ -48,7 +48,7 @@ export class Repository
   }
 
   async getInfo(refresh: boolean = false): Promise<FromAPI<RepositoryData>> {
-    if (refresh || !this.cache) {
+    if (refresh || Object.keys(this.cache).length === 0) {
       this.cache = await Laces.API.Repository.getRepositoryMetadata(this.id);
     }
     return this.cache as FromAPI<RepositoryData>;

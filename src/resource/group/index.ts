@@ -26,7 +26,7 @@ export class Group
   }
 
   async getInfo(refresh: boolean = false): Promise<FromAPI<GroupView>> {
-    if (refresh || !this.cache) {
+    if (refresh || Object.keys(this.cache).length === 0) {
       this.cache = await Laces.API.Group.GetGroupDetails(this.id);
     }
     return this.cache as FromAPI<GroupView>;

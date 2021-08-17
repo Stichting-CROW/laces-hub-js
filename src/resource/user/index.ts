@@ -13,9 +13,18 @@ export class User implements ReadOnlyLacesResource<UserView> {
   }
 
   async getInfo(refresh?: boolean): Promise<FromAPI<UserView>> {
-    if (refresh || !this.cache) {
+    if (refresh || Object.keys(this.cache).length === 0) {
       this.cache = await Laces.API.User.GetUser(this.id);
     }
     return this.cache as FromAPI<UserView>;
+  }
+
+  /** Try to retreive the User that provided the token. */
+  static async me(): Promise<undefined | User> {
+    const groups = await Laces.groups();
+    const userGroup = groups.find(async (group) => (await group.getInfo()).type == "USER");
+    if (!userGroup) return;
+    const ownerId = (await userGroup.getInfo(true)).owner;
+    return new User(ownerId);
   }
 }

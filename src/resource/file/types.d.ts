@@ -14,7 +14,7 @@ export interface FileInfo extends CreatedModifiedResource, LacesResponse {
 
 export interface NewFileMetadata {
   name: string;
-  versioningMode: string;
+  versioningMode: FileVersioningMode;
   versionLabel: string;
 }
 

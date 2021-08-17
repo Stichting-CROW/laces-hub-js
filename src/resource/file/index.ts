@@ -23,7 +23,7 @@ export class FileResource implements LacesResource<FileInfo, null> {
   }
 
   async getInfo(refresh: boolean = false): Promise<FromAPI<FileInfo>> {
-    if (refresh || !this.cache) {
+    if (refresh || Object.keys(this.cache).length === 0) {
       this.cache = await Laces.API.File.GetFile(this.id);
     }
     return this.cache as FromAPI<FileInfo>;

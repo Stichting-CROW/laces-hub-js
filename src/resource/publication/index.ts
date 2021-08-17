@@ -33,7 +33,7 @@ export class RdfPublication
   }
 
   async getInfo(refresh?: boolean): Promise<FromAPI<PublicationView>> {
-    if (refresh || !this.cache) {
+    if (refresh || Object.keys(this.cache).length === 0) {
       this.cache = await Laces.API.Publication.GetPublicationMetaData(this.id);
       this.isVersioned = !!this.cache.versions;
     }
