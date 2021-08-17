@@ -2,10 +2,10 @@
   "name": "@stichting-crow/laces-hub-js",
   "version": "0.3.7",
   "description": "Connect with Laces Hub",
-  "main": "lib/laces/index",
-  "typings": "lib/laces/index",
+  "main": "dist/laces/index",
+  "typings": "dist/laces/index",
   "files": [
-    "lib/**/*"
+    "dist/**/*"
   ],
   "repository": {
     "type": "git",
@@ -15,7 +15,7 @@
   "bugs": {
     "url": "https://github.com/Stichting-CROW/laces-hub-js/issues"
   },
-  "types": "lib",
+  "types": "dist",
   "author": "Redmer Kronemeijer <redmer.kronemeijer@crow.nl>",
   "license": "MPL-2.0",
   "private": false,
@@ -50,7 +50,7 @@
   "scripts": {
     "test": "jest",
     "build": "tsc",
-    "start": "yarn build && node ./lib/index.js",
+    "start": "yarn build && node ./dist/index.js",
     "prepare": "yarn build",
     "prepublishOnly": "yarn test && yarn run lint",
     "preversion": "yarn run lint",
