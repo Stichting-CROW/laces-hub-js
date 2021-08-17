@@ -1,5 +1,6 @@
 import Laces from "../../laces";
 import { FromAPI, LacesResource } from "../../laces/util/types";
+import { fileFromPath } from "../../util/path";
 import { ConfirmDeletion } from "../types";
 import { FileInfo } from "./types";
 
@@ -11,6 +12,10 @@ export class FileResource implements LacesResource<FileInfo, null> {
   public constructor(id: string, info?: Partial<FileInfo>) {
     this.id = id;
     this.cache = { ...info };
+  }
+
+  static async byPath(path: string): Promise<FileResource | undefined> {
+    return fileFromPath(path);
   }
 
   async update(_metadata: never, payload: Buffer) {

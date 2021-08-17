@@ -2,6 +2,7 @@ import { default as FormData } from "form-data";
 import { assert } from "ts-essentials";
 import Laces from "../../laces";
 import { FromAPI, LacesResource } from "../../laces/util/types";
+import { publicationFromPath } from "../../util/path";
 import { ConfirmDeletion } from "../types";
 import {
   FileFormat,
@@ -25,6 +26,10 @@ export class RdfPublication
     if (info) {
       this.isVersioned = !!info.versions;
     }
+  }
+
+  static async byPath(path: string): Promise<RdfPublication | undefined> {
+    return publicationFromPath(path);
   }
 
   async getInfo(refresh?: boolean): Promise<FromAPI<PublicationView>> {

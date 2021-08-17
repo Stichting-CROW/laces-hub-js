@@ -10,7 +10,6 @@ import { Repositories } from "../resource/repository/api";
 import { getRepositoriesWithAccessStatus, Repository } from "../resource/repository";
 import { Users } from "../resource/user/api";
 import { User } from "../resource/user";
-import { fileFromPath, groupFromPath, publicationFromPath, repositoryFromPath } from "../util/path";
 config();
 
 Endpoint.envCheck();
@@ -35,14 +34,6 @@ const Laces = {
   Repository: Repository,
   File: FileResource,
   Publication: RdfPublication,
-
-  /** Find a resource by its path. */
-  byPath: {
-    group: groupFromPath,
-    repository: repositoryFromPath,
-    file: fileFromPath,
-    publication: publicationFromPath,
-  },
 
   groups: getTopGroups,
   repositories: getRepositoriesWithAccessStatus,

@@ -1,20 +1,21 @@
 import { Dictionary } from "ts-essentials";
 import Laces from "../../laces";
+import { FromAPI, LacesResource } from "../../laces/util/types";
+import { likeUUID } from "../../laces/util/uuid";
+import { repositoryFromPath } from "../../util/path";
 import { FileResource } from "../file";
 import { FileInfo, NewFileMetadata } from "../file/types";
 import { VersionedFileResource } from "../file/versioned";
 import { RdfPublication } from "../publication";
 import { NewPublicationMetadata, PublicationView } from "../publication/types";
 import { VersionedRdfPublication } from "../publication/versioned";
-import { FromAPI, LacesResource } from "../../laces/util/types";
-import { likeUUID } from "../../laces/util/uuid";
+import { ConfirmDeletion } from "../types";
 import {
   Repository as RepositoryT,
   RepositoryData,
   RepositoryPartial,
   RepositoryView,
 } from "./types";
-import { ConfirmDeletion } from "../types";
 
 /** Contains {@link RdfPublication RDF Publications} or {@link LacesFiles other files}. */
 export class Repository
@@ -35,6 +36,10 @@ export class Repository
         this.ownerId = this.cache.owner;
       } else this.ownerName = this.cache.owner;
     }
+  }
+
+  static async byPath(path: string): Promise<Repository | undefined> {
+    return repositoryFromPath(path);
   }
 
   static async create(data: RepositoryData): Promise<Repository> {

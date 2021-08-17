@@ -1,8 +1,9 @@
 import Laces from "../../laces";
-import { Repository } from "../repository";
-import { RepositoryData } from "../repository/types";
 import { allPages, allPagesId } from "../../laces/util/paginated";
 import { FromAPI, LacesResource } from "../../laces/util/types";
+import { groupFromPath } from "../../util/path";
+import { Repository } from "../repository";
+import { RepositoryData } from "../repository/types";
 import { ConfirmDeletion } from "../types";
 import {
   GroupMutationView as GroupMutationView,
@@ -29,6 +30,10 @@ export class Group
       this.cache = await Laces.API.Group.GetGroupDetails(this.id);
     }
     return this.cache as FromAPI<GroupView>;
+  }
+
+  static async byPath(path: string): Promise<Group | undefined> {
+    return groupFromPath(path);
   }
 
   async delete(confirm: ConfirmDeletion): Promise<GroupMutationView | void> {
