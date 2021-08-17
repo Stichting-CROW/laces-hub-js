@@ -32,7 +32,7 @@ export class Group
     return this.cache as FromAPI<GroupView>;
   }
 
-  static async byPath(path: string): Promise<Group | undefined> {
+  static async byPath(path: string): Promise<Group> {
     return groupFromPath(path);
   }
 

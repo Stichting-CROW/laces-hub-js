@@ -14,7 +14,7 @@ export class FileResource implements LacesResource<FileInfo, null> {
     this.cache = { ...info };
   }
 
-  static async byPath(path: string): Promise<FileResource | undefined> {
+  static async byPath(path: string): Promise<FileResource> {
     return fileFromPath(path);
   }
 

@@ -28,7 +28,7 @@ export class RdfPublication
     }
   }
 
-  static async byPath(path: string): Promise<RdfPublication | undefined> {
+  static async byPath(path: string): Promise<RdfPublication> {
     return publicationFromPath(path);
   }
 

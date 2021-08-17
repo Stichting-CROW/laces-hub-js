@@ -38,7 +38,7 @@ export class Repository
     }
   }
 
-  static async byPath(path: string): Promise<Repository | undefined> {
+  static async byPath(path: string): Promise<Repository> {
     return repositoryFromPath(path);
   }
 
