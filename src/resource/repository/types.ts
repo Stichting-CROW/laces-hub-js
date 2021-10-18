@@ -1,4 +1,5 @@
-import { AccessRole, GroupMutationView, GroupView, ICreatedModified } from "../group/types";
+import { AccessRole, GroupView } from "../group/types";
+import { CreatedModifiedResource } from "../types";
 import { UserView } from "../user/types";
 
 export interface RepositoryPartial {
@@ -12,7 +13,7 @@ export interface RepositoryPage {
   total: number;
 }
 
-export interface Repository extends ICreatedModified {
+export interface Repository extends CreatedModifiedResource {
   description?: string;
   id?: string;
   name: string;
@@ -31,7 +32,7 @@ export interface RepositoryView {
   publicVisibility?: boolean;
   status: RepositoryStatus;
 }
-export interface RepositoryData extends ICreatedModified {
+export interface RepositoryData extends CreatedModifiedResource {
   description?: string;
   id?: string;
   name: string;

@@ -1,3 +1,5 @@
+import { UserView } from "./user/types";
+
 /** Explicitely confirm deletion. */
 export interface ConfirmDeletion {
   /** Function returns void if false */
