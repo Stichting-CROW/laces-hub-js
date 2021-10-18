@@ -37,7 +37,8 @@ export async function publicationFromPath(path: string): Promise<RdfPublication>
 
   const repo = await repositoryFromPath(pathComponents.join("/"));
   const publications = await repo.publications();
-  const pub = publications.find((info) => info.cache.uri?.startsWith(path));
+  const localName = path.replace(RegExp("https?://hub\\.laces\\.tech"), "");
+  const pub = publications.find((info) => info.cache.uri === localName);
   if (!pub)
     throw new PathError(`No publication "${pubName}" in repository "${pathComponents.join("/")}"`);
   return pub;
@@ -60,7 +61,8 @@ export async function fileFromPath(path: string): Promise<FileResource> {
 export async function repositoryFromPath(path: string): Promise<Repository> {
   // First option is to find from #fullPath
   const allRepos = await Laces.repositories();
-  const repo = allRepos.find((repo) => repo.cache.fullPath === path);
+  const localName = path.replace(RegExp("https?://hub\\.laces\\.tech/"), "");
+  const repo = allRepos.find((repo) => repo.cache.fullPath === localName);
   if (!repo) throw new PathError(`No repository at path "${path}"`);
   return repo;
 }
