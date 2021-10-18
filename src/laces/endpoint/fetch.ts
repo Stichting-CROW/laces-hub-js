@@ -73,7 +73,7 @@ export class Endpoint {
 
     const base = param.baseUrl ?? Endpoint.endpoint();
     const url = `${base}${path}${queryString ? `?${queryString}` : ""}`;
-    const response = await fetch(url, { headers: headers, body: param.body });
+    const response = await fetch(url, { ...param, headers: headers, body: param.body });
     if (!response.ok) throw new EndpointError(response);
     return response;
   }
