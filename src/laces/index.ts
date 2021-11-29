@@ -11,8 +11,6 @@ import { fileFromPath, groupFromPath, publicationFromPath, repositoryFromPath } 
 import { default as Endpoint } from "./endpoint/fetch";
 config();
 
-Endpoint.envCheck();
-
 /** The Laces Hub */
 const Laces = {
   User: User,

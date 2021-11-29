@@ -41,6 +41,7 @@ export class Endpoint {
 
   /** Get endpoint from environment variables. */
   static endpoint() {
+    this.envCheck();
     return `${process.env.LACES_ENDPOINT_URI}`;
   }
 
